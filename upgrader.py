@@ -35,6 +35,14 @@ def replace_in_file(file_path, replacements):
     with open(file_path, 'w') as file:
         file.write(content)
 
+def replace_cargo_file(source_cargo, destination_cargo, replacements):
+    # Copy the Cargo.toml file
+    shutil.copy2(source_cargo, destination_cargo)
+    
+    # Apply replacements to the copied Cargo.toml file
+    replace_in_file(destination_cargo, replacements)
+
+
 def remove_text_block(file_path, pattern):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -75,40 +83,52 @@ def create_branch_in_paseo_repo(paseo_repo_dir, branch_name):
         # Change back to the original working directory
         os.chdir(current_dir)
 
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Apply replacements to a cloned repository.")
+    parser = argparse.ArgumentParser(description="Clone a repository, create a branch, copy specified directory, replace Cargo.toml file, apply replacements, and cleanup.")
     parser.add_argument("--repo_url", required=True, help="URL of the repository to clone.")
     parser.add_argument("--tag", required=True, help="Tag of the repository to clone.")
     parser.add_argument("--source_subdir", required=True, help="Subdirectory in the repository to copy.")
     parser.add_argument("--destination_dir", required=True, help="Directory to copy the source subdirectory contents to.")
     parser.add_argument("--config_file", required=True, help="Path to the replacements configuration JSON file.")
     parser.add_argument("--paseo_repo_dir", required=True, help="Directory of the local paseo repository where a new branch will be created.")
+    parser.add_argument("--polkadot_cargo", required=True, help="Path to the source Cargo.toml file in the cloned repository.")
+    parser.add_argument("--paseo_cargo", required=True, help="Destination path for the Cargo.toml file.")
 
     args = parser.parse_args()
 
-    # Read configuration
+    # Read configuration for replacements
     config = read_config(args.config_file)
     replacements = config["replacements"]
     remove_block_pattern = config["remove_block_pattern"]
 
-    # Create the new branch in the paseo repository
+    # Create a new branch in the paseo repository
     branch_name = f"release-{args.tag}"
     create_branch_in_paseo_repo(args.paseo_repo_dir, branch_name)
 
     # Directory name for the cloned repository
     temp_dir = "./polkadot-runtimes"
 
-    # Clone and process the repository
+    # Clone the repository to a temporary directory
     clone_repo(args.repo_url, args.tag, temp_dir)
+
+    # Copy the specified subdirectory from the cloned repo to the destination
     source_dir = os.path.join(temp_dir, args.source_subdir)
     copy_directory_contents(source_dir, args.destination_dir)
 
-    # Apply replacements and removals
+    # Replace the Cargo.toml file
+    source_cargo_path = os.path.join(temp_dir, args.polkadot_cargo)
+    destination_cargo_path = args.paseo_cargo
+    # Copy the Cargo.toml file from source to destination
+    shutil.copy2(source_cargo_path, destination_cargo_path)
+    # Apply replacements to the Cargo.toml file
+    replace_in_file(destination_cargo_path, replacements)
+
+    # Apply replacements and removals to the entire directory (including the newly copied Cargo.toml)
     apply_replacements_to_directory(args.destination_dir, replacements, remove_block_pattern)
 
-    # Cleanup
+    # Cleanup by removing the temporary directory
     shutil.rmtree(temp_dir)
     print("Processing completed successfully.")
+
 
    
