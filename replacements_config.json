@@ -9,7 +9,8 @@
       "type LeaseOffset = LeaseOffset;": "type LeaseOffset = ();",
       "// Polkadot version identifier;": "// Portico version identifier;",
       "/// Runtime version (Polkadot).": "/// Runtime version (Paseo).",
-      "//! XCM configuration for Polkadot.": "//! XCM configuration for Paseo."
+      "//! XCM configuration for Polkadot.": "//! XCM configuration for Paseo.",
+      "pub const EPOCH_DURATION_IN_SLOTS: BlockNumber = prod_or_fast!(4 * HOURS, 1 * MINUTES);":"pub const EPOCH_DURATION_IN_SLOTS: BlockNumber = prod_or_fast!(1 * HOURS, 1 * MINUTES);"
 
     },
     "remove_block_pattern": "\\s*// Polkadot Genesis was on May 26, 2020\\..*?DOT_LEASE_OFFSET\\\"\\);"
