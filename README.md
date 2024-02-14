@@ -5,6 +5,7 @@ It creates a new branch in the local Paseo repository, copies the specified Polk
 
 ## Help
 
+```
 usage: runtimes-upgrader.py [-h] --repo_url REPO_URL --tag TAG --source_subdir SOURCE_SUBDIR --destination_dir DESTINATION_DIR --config_file CONFIG_FILE --paseo_repo_dir PASEO_REPO_DIR
 
 optional arguments:
@@ -19,7 +20,7 @@ optional arguments:
                         JSON configuration file for text replacements.
   --paseo_repo_dir PASEO_REPO_DIR
                         Root directory of the local Paseo repository.
-➜  upgrader git:(main) ✗
+```
 
 ## Example
 
