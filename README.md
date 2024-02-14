@@ -26,3 +26,7 @@ optional arguments:
 ```
 python upgrader.py --repo_url https://github.com/polkadot-fellows/runtimes.git --tag v1.1.2 --source_subdir relay/polkadot --destination_dir /local/paseo/runtimes/relay/paseo --config_file replacements_config.json --paseo_repo_dir /local/blockchain/paseo/runtimes
 ```
+
+## Replacement criteria.
+
+Once the directory is copied, there is a set of rules for replacing values to accomodate to Paseo values. These rules can be found in the file `replacement_config.json`
