@@ -1,8 +1,9 @@
 {
     "replacements": {
       "polkadot_runtime_constants": "paseo_runtime_constants",
+      "polkadot-runtime-constants": "paseo-runtime-constants",
       "runtime::polkadot": "runtime::paseo",
-      "polkadot-runtime":"paseo-runtime"
+      "polkadot-runtime\"":"paseo-runtime\"",
       "spec_name: create_runtime_str!(\"polkadot\"),": "spec_name: create_runtime_str!(\"paseo\"),",
       "impl_name: create_runtime_str!(\"parity-polkadot\"),": "impl_name: create_runtime_str!(\"paseo-testnet\"),",
       "type LeaseOffset = LeaseOffset;": "type LeaseOffset = ();",
